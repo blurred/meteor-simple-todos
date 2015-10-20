@@ -45,13 +45,15 @@ Template.body.events({
     // Prevent default browser from submit
     event.preventDefault();
 
-    // Get value from torm element
+    // Get value from form element
     var text = event.target.text.value;
 
     // Insert a task into the collection
     Tasks.insert({
       text: text,
-      createdAt: new Date() // current time
+      createdAt: new Date(),  // current time
+      owner: Meteor.userId(), // _id of Logged in user
+      username: Meteor.user().username // username of Logged in user
     });
 
     // Clear form
@@ -72,5 +74,9 @@ Template.body.events({
     "click .delete": function () {
       Tasks.remove(this._id);
     }
+  });
+
+  Accounts.ui.config({
+    passwordSignupFields: "USERNAME_ONLY"
   });
 }
